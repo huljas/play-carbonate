@@ -50,17 +50,17 @@ public class ResourceMigrationResolver implements MigrationResolver {
         Set<Migration> migrations = new HashSet<Migration>();
 
         // Find all resources in the migrations location.
-        String convertedMigrationsLocation = convertMigrationsLocation(migrationsLocation, dbType);
+        File path = new File(migrationsLocation);
 
         List<Resource> resources = new ArrayList<Resource>();
 
-        Collection<File> files = FileUtils.listFiles(new File(convertedMigrationsLocation), new String[]{"*.sql"}, false);
+        Collection<File> files = FileUtils.listFiles(path, new String[]{"*.sql"}, true);
         for (File file : files) {
             resources.add(new Resource(file));
         }
 
         if (resources.isEmpty()) {
-            String message = "No migrations were found using resource pattern '" + migrationsLocation + "'.";
+            String message = "No migrations were found from path '" + path.getAbsolutePath() + "'.";
             logger.error(message);
             throw new MigrationException(message);
         }

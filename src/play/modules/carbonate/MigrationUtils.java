@@ -3,6 +3,7 @@ package play.modules.carbonate;
 import com.carbonfive.db.migration.DataSourceMigrationManager;
 import com.carbonfive.db.migration.ResourceMigrationResolver;
 import org.apache.commons.lang.StringUtils;
+import play.Play;
 import play.db.DB;
 import play.exceptions.UnexpectedException;
 
@@ -15,30 +16,6 @@ import java.util.Date;
  */
 public class MigrationUtils {
 
-    private static final SimpleDateFormat versionFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-
-    public static void generate(String path, String description) {
-        try {
-            File directory = new File(path);
-            if (!directory.exists()) {
-                System.out.println("Creating non-existent directory " + directory.getAbsolutePath());
-                directory.createNewFile();
-            }
-            String version = versionFormat.format(new Date());
-            description = StringUtils.replaceChars(description, ' ', '_');
-            description = StringUtils.replaceChars(description, ".,:;", "");
-            description = description.toLowerCase();
-            File migrationFile = new File(directory, version + "_" + description + ".sql");
-            migrationFile.createNewFile();
-            PrintWriter writer = new PrintWriter(new FileWriter(migrationFile));
-            writer.println("-- You can write you comments here ");
-            writer.close();
-            System.out.println("New migration file created " + migrationFile.getAbsolutePath());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     public static void runMigrations(String pattern) {
         try {
             DataSourceMigrationManager manager = new DataSourceMigrationManager(DB.datasource);
@@ -47,6 +24,56 @@ public class MigrationUtils {
             manager.migrate();
         } catch (Exception e) {
             throw new UnexpectedException("Database migrations failed", e);
+        }
+    }
+
+    public static String getPath() {
+        return Play.configuration.getProperty("carbonate.path", "conf/migrations");
+    }
+
+    public static String getDefaultDialect(String driver) {
+        String dialect = Play.configuration.getProperty("jpa.dialect");
+        if (dialect != null) {
+            return dialect;
+        } else if (driver.equals("org.hsqldb.jdbcDriver")) {
+            return "org.hibernate.dialect.HSQLDialect";
+        } else if (driver.equals("com.mysql.jdbc.Driver")) {
+            return "play.db.jpa.MySQLDialect";
+        } else if (driver.equals("org.postgresql.Driver")) {
+            return "org.hibernate.dialect.PostgreSQLDialect";
+        } else if (driver.toLowerCase().equals("com.ibm.db2.jdbc.app.DB2Driver")) {
+            return "org.hibernate.dialect.DB2Dialect";
+        } else if (driver.equals("com.ibm.as400.access.AS400JDBCDriver")) {
+            return "org.hibernate.dialect.DB2400Dialect";
+        } else if (driver.equals("com.ibm.as400.access.AS390JDBCDriver")) {
+            return "org.hibernate.dialect.DB2390Dialect";
+        } else if (driver.equals("oracle.jdbc.driver.OracleDriver")) {
+            return "org.hibernate.dialect.Oracle9iDialect";
+        } else if (driver.equals("com.sybase.jdbc2.jdbc.SybDriver")) {
+            return "org.hibernate.dialect.SybaseAnywhereDialect";
+        } else if ("com.microsoft.jdbc.sqlserver.SQLServerDriver".equals(driver)) {
+            return "org.hibernate.dialect.SQLServerDialect";
+        } else if ("com.sap.dbtech.jdbc.DriverSapDB".equals(driver)) {
+            return "org.hibernate.dialect.SAPDBDialect";
+        } else if ("com.informix.jdbc.IfxDriver".equals(driver)) {
+            return "org.hibernate.dialect.InformixDialect";
+        } else if ("com.ingres.jdbc.IngresDriver".equals(driver)) {
+            return "org.hibernate.dialect.IngresDialect";
+        } else if ("progress.sql.jdbc.JdbcProgressDriver".equals(driver)) {
+            return "org.hibernate.dialect.ProgressDialect";
+        } else if ("com.mckoi.JDBCDriver".equals(driver)) {
+            return "org.hibernate.dialect.MckoiDialect";
+        } else if ("InterBase.interclient.Driver".equals(driver)) {
+            return "org.hibernate.dialect.InterbaseDialect";
+        } else if ("com.pointbase.jdbc.jdbcUniversalDriver".equals(driver)) {
+            return "org.hibernate.dialect.PointbaseDialect";
+        } else if ("com.frontbase.jdbc.FBJDriver".equals(driver)) {
+            return "org.hibernate.dialect.FrontbaseDialect";
+        } else if ("org.firebirdsql.jdbc.FBDriver".equals(driver)) {
+            return "org.hibernate.dialect.FirebirdDialect";
+        } else {
+            throw new UnsupportedOperationException("I do not know which hibernate dialect to use with "
+                    + driver + " and I cannot guess it, use the property jpa.dialect in config file");
         }
     }
 

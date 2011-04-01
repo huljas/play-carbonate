@@ -1,10 +1,12 @@
-# Here you can create play commands that are specific to the module, and extend existing commands
+import sys
+import os
+import subprocess
 
-MODULE = 'play-carbonate'
+MODULE = 'carbonate'
 
 # Commands that are specific to your module
 
-COMMANDS = ['play-carbonate:hello']
+COMMANDS = ['carbonate', 'carbonate:help', 'carbonate:new']
 
 def execute(**kargs):
     command = kargs.get("command")
@@ -12,9 +14,18 @@ def execute(**kargs):
     args = kargs.get("args")
     env = kargs.get("env")
 
-    if command == "play-carbonate:hello":
-        print "~ Hello"
-
+    if command == "carbonate:new":
+        java_cmd = app.java_cmd(args, None, "play.modules.carbonate.NewMigrationMain")
+        try:
+            subprocess.call(java_cmd, env=os.environ)
+        except OSError:
+            print "Could not execute the java executable, please make sure the JAVA_HOME environment variable is set properly (the java executable should reside at JAVA_HOME/bin/java). "
+            sys.exit(-1)
+    else:
+        print "~ Carbonate module is used for managing your database changes."
+        print "~"
+        print "~ Usage:"
+        print "~ play carbonate:new - Creates new database migration file, prefilled with changes detected between your database and model."
 
 # This will be executed before any command (new, run...)
 def before(**kargs):

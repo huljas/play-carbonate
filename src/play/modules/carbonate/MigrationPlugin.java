@@ -10,12 +10,12 @@ import play.PlayPlugin;
 public class MigrationPlugin extends PlayPlugin {
 
     public void onApplicationStart() {
-        String pattern = (String) Play.configuration.get("migrations.pattern");
+        String pattern = (String) Play.configuration.get("carbonate.path");
         if (pattern != null) {
-            Logger.info("Running migrations from pattern " + pattern);
+            Logger.info("Running migrations from path " + pattern);
             MigrationUtils.runMigrations(pattern);
         } else {
-            Logger.info("Missing configuration migrations.pattern, database migrations will be ignored!");
+            Logger.info("Missing configuration 'carbonate.path', database migrations will be ignored!");
         }
     }
 
