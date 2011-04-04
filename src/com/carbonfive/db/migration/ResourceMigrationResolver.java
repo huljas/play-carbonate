@@ -87,24 +87,6 @@ public class ResourceMigrationResolver implements MigrationResolver {
         return resolve(DatabaseType.UNKNOWN);
     }
 
-    protected String convertMigrationsLocation(String migrationsLocation, DatabaseType dbType) {
-        String converted = migrationsLocation;
-
-        if (!(isBlank(FilenameUtils.getName(converted)) || FilenameUtils.getName(converted).contains("*"))) {
-            converted += "/";
-        }
-
-        if (!FilenameUtils.getName(converted).contains("*")) {
-            converted += "*";
-        }
-
-        if (!(converted.startsWith("file:") || converted.startsWith("classpath:"))) {
-            converted = "file:" + converted;
-        }
-
-        return converted;
-    }
-
     public void setMigrationsLocation(String migrationsLocation) {
         this.migrationsLocation = migrationsLocation;
     }
