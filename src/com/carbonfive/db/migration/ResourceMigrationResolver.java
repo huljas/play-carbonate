@@ -54,7 +54,7 @@ public class ResourceMigrationResolver implements MigrationResolver {
 
         List<Resource> resources = new ArrayList<Resource>();
 
-        Collection<File> files = FileUtils.listFiles(path, new String[]{"*.sql"}, true);
+        Collection<File> files = FileUtils.listFiles(path, new String[]{"sql"}, true);
         for (File file : files) {
             resources.add(new Resource(file));
         }
