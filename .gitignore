@@ -4,4 +4,4 @@
 *.ipr
 tmp/
 dist/
-lib/messages.jar
+lib/carbonate.jar
