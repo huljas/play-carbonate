@@ -5,7 +5,7 @@ import play.Play;
 import play.PlayPlugin;
 
 /**
- * @author heikkiu
+ * @author huljas
  */
 public class MigrationPlugin extends PlayPlugin {
 

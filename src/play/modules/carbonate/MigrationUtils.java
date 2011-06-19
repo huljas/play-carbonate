@@ -12,7 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * @author heikkiu
+ * @author huljas
  */
 public class MigrationUtils {
 
@@ -28,7 +28,7 @@ public class MigrationUtils {
     }
 
     public static String getPath() {
-        return Play.configuration.getProperty("carbonate.path", "conf/migrations");
+        return Play.configuration.getProperty("carbonate.path");
     }
 
     public static String getDefaultDialect(String driver) {
@@ -76,5 +76,4 @@ public class MigrationUtils {
                     + driver + " and I cannot guess it, use the property jpa.dialect in config file");
         }
     }
-
 }

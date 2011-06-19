@@ -4,7 +4,7 @@ Module for creating and running database migrations for Play application. To use
 
 bc. module.carbonate=${play.path}/modules/carbonate-{version}
 
-Next configure the database and add the carbonate path in to the **application.conf** file, _here we are using id local-mysql_
+Next configure the database and add the carbonate path in to the **application.conf** file, _here we are using framework id local-mysql_
 
 bc. %local-mysql.db=
 %local-mysql.db.url=jdbc:mysql://localhost:3306/play-test
@@ -26,5 +26,11 @@ The new migration will be applied to the database the next time you run your pla
 
 bc. play run --%local-mysql
 
-Please note that if the configuration is missing the **carbonate.path** property the migrations will just be ignored, which is useful if you want to use the mem database in play.
+Please note that if the **application.conf** is missing the **carbonate.path** property the migrations will just be ignored, which is useful if you want to use the mem database in play.
+
+h3. Configuration options
+
+bc. carbonate.path       - Path to the migrations folder. If missing the migrations will not be run.
+carbonate.delimeter      - Delimeter string to use to separate the generated migration statements. Default value ';'.
+carbonate.comment        - Comment string used in migrations. Default value '--'.
 
