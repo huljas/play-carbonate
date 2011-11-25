@@ -6,8 +6,6 @@ import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import play.Play;
-
 import java.io.File;
 import java.util.*;
 
@@ -52,7 +50,7 @@ public class ResourceMigrationResolver implements MigrationResolver {
         Set<Migration> migrations = new HashSet<Migration>();
 
         // Find all resources in the migrations location.
-        File path = new File(Play.applicationPath, migrationsLocation);
+        File path = new File(migrationsLocation);
 
         List<Resource> resources = new ArrayList<Resource>();
 
