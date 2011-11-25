@@ -37,8 +37,9 @@ public class NewMigrationMain {
         System.out.println("Please give description for you migration:");
         String description = reader.readLine();
 
+        String appPath = System.getProperty("application.path",".");
         String id = System.getProperty("play.id", "");
-        Play.init(new File("."), id);
+        Play.init(new File(appPath), id);
 
         String path = MigrationUtils.getPath();
         if (path == null) {
