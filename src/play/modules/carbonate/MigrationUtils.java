@@ -28,7 +28,12 @@ public class MigrationUtils {
     }
 
     public static String getPath() {
-        return Play.configuration.getProperty("carbonate.path");
+        String path = Play.configuration.getProperty("carbonate.path");
+        if (path == null) {
+            return null;
+        } else {
+            return Play.applicationPath.getPath() + "/" + path;
+        }
     }
 
     public static String getDefaultDialect(String driver) {
