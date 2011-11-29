@@ -2,7 +2,7 @@
 
 <project name="carbonate" default="build" basedir=".">
 
-    <property name="play.path" value="../../play-1.2.2RC1"/>
+    <property name="play.path" value="../../play-1.2.2"/>
 
     <path id="project.classpath">
         <pathelement path="${play.path}/framework/classes"/>
