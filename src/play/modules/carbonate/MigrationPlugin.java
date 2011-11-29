@@ -10,7 +10,7 @@ import play.PlayPlugin;
 public class MigrationPlugin extends PlayPlugin {
 
     public void onApplicationStart() {
-        String pattern = (String) Play.configuration.get("carbonate.path");
+        String pattern = MigrationUtils.getPath();
         if (pattern != null) {
             Logger.info("Running migrations from path " + pattern);
             MigrationUtils.runMigrations(pattern);
